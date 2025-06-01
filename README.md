@@ -9,3 +9,4 @@ In the end, it will be a simple AirBnb-like service
 2. Create a Schedule module with infrastructure, basic service and controller
 3. Create a Room module with infrastructure, basic service and controller
 4. Push it to personal GitLab
+
