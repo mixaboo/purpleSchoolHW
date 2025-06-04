@@ -16,5 +16,5 @@ In the end, it will be a simple AirBnb-like service
 2. Create CRUD operations for Schedule and Room modules with some restrictions:
    - You cannot create more than one reservation for one room on the same day
    - For simplicity of booking, use only date without time
-   - The room has data: number, type, view from the window, soft-delete field 
+   - The room entry has data: number, type, view from the window, soft-delete field 
    - The schedule entry has data: roomId, date, status of booking

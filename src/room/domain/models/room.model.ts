@@ -1,3 +1,6 @@
+import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
+import { prop } from '@typegoose/typegoose';
+
 export enum RoomViews {
   Garden,
   Seaside,
@@ -5,11 +8,38 @@ export enum RoomViews {
   Pool,
 }
 
-export class RoomModel {
-  _id: string;
-  number: number;
+export enum RoomTypes {
+  Standard,
+  Suite,
+  Deluxe,
+  Luxury,
+}
+
+export class RoomCharacteristics {
+  @prop()
   size: number;
+
+  @prop()
   bedsCount: number;
-  view: RoomViews;
+
+  @prop()
   babyBedAvailable: boolean;
+
+  @prop({ enum: RoomViews })
+  view: RoomViews;
+}
+
+export interface RoomModel extends Base {}
+export class RoomModel extends TimeStamps {
+  @prop()
+  number: number;
+
+  @prop()
+  roomType: string;
+
+  @prop({ type: () => [RoomCharacteristics], _id: false })
+  characteristics: RoomCharacteristics;
+
+  @prop()
+  deletedAt: Date;
 }
