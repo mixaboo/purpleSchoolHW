@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ScheduleModule } from './schedule/schedule.module';
 import { RoomModule } from './room/room.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { NpmModule } from './install/npm/npm.module';
+import { TypegooseModule } from '@m8a/nestjs-typegoose';
+import { getMongoConfig } from './core/database/configs/mongo.config';
 
 @Module({
   imports: [
@@ -13,7 +14,11 @@ import { NpmModule } from './install/npm/npm.module';
     RoomModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://localhost/test'),
-    NpmModule,
+    TypegooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getMongoConfig,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
