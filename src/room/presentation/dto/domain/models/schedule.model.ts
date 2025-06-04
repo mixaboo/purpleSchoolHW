@@ -7,7 +7,7 @@ export class ScheduleModel extends TimeStamps {
   @prop()
   reservationDate: Date;
 
-  @prop()
+  @prop({ default: true })
   active: boolean;
 
   @prop()
