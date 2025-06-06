@@ -20,6 +20,9 @@ export class ScheduleController {
 
   @Post('create')
   async create(@Body() dto: CreateScheduleDto) {
+    if (dto.roomId === undefined) {
+      throw new HttpException('Room id is required', HttpStatus.BAD_REQUEST);
+    }
     return this.scheduleService.create(dto);
   }
 

@@ -1,45 +1,33 @@
-import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
-import { prop } from '@typegoose/typegoose';
-
-export enum RoomViews {
-  Garden,
-  Seaside,
-  Backyard,
-  Pool,
-}
-
-export enum RoomTypes {
-  Standard,
-  Suite,
-  Deluxe,
-  Luxury,
-}
+import { RoomViews } from '../enums/room.enum';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export class RoomCharacteristics {
-  @prop()
+  @Prop()
   size: number;
 
-  @prop()
+  @Prop()
   bedsCount: number;
 
-  @prop()
+  @Prop()
   babyBedAvailable: boolean;
 
-  @prop({ enum: RoomViews })
+  @Prop({ enum: RoomViews })
   view: RoomViews;
 }
 
-export interface RoomModel extends Base {}
-export class RoomModel extends TimeStamps {
-  @prop()
+@Schema({ timestamps: true })
+export class RoomModel {
+  @Prop()
   number: number;
 
-  @prop()
+  @Prop()
   roomType: string;
 
-  @prop({ type: () => [RoomCharacteristics], _id: false })
+  @Prop({ type: () => [RoomCharacteristics], _id: false })
   characteristics: RoomCharacteristics;
 
-  @prop()
+  @Prop({ default: null })
   deletedAt: Date;
 }
+
+export const RoomSchema = SchemaFactory.createForClass(RoomModel);

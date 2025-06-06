@@ -1,21 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectModel } from '@m8a/nestjs-typegoose';
-import { ReturnModelType } from '@typegoose/typegoose/lib/types';
-import { ScheduleModel } from '../../../room/presentation/dto/domain/models/schedule.model';
-import { DocumentType } from '@typegoose/typegoose';
 import { CreateScheduleDto } from '../../presentation/dto/create-schedule.dto';
 import { UpdateScheduleDto } from '../../presentation/dto/update-schedule.dto';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { RESERVATION_ALREADY_EXISTS } from '../../infrastructure/constants/schedule.constants';
+import { InjectModel } from '@nestjs/mongoose';
+import { ScheduleModel } from '../../domain/models/schedule.model';
 
 @Injectable()
 export class ScheduleService {
   constructor(
-    @InjectModel(ScheduleModel)
-    private readonly scheduleModel: ReturnModelType<typeof ScheduleModel>,
+    @InjectModel('Schedule')
+    private readonly scheduleModel: Model<ScheduleModel>,
   ) {}
 
-  async create(dto: CreateScheduleDto): Promise<DocumentType<ScheduleModel>> {
+  async create(dto: CreateScheduleDto): Promise<ScheduleModel> {
     const sameReservation = await this.scheduleModel
       .find({
         roomId: new Types.ObjectId(dto.roomId),
@@ -28,9 +26,7 @@ export class ScheduleService {
     return this.scheduleModel.create(dto);
   }
 
-  async delete(
-    scheduleId: string,
-  ): Promise<DocumentType<ScheduleModel> | null> {
+  async delete(scheduleId: string): Promise<ScheduleModel | null> {
     return await this.scheduleModel
       .findByIdAndUpdate(
         new Types.ObjectId(scheduleId),
@@ -52,15 +48,13 @@ export class ScheduleService {
     };
   }
 
-  async get(scheduleId: string): Promise<DocumentType<ScheduleModel> | null> {
+  async get(scheduleId: string): Promise<ScheduleModel | null> {
     return this.scheduleModel
       .findOne({ _id: new Types.ObjectId(scheduleId) })
       .exec();
   }
 
-  async getByRoomId(
-    roomId: string,
-  ): Promise<DocumentType<ScheduleModel>[] | null> {
+  async getByRoomId(roomId: string): Promise<ScheduleModel[] | null> {
     return this.scheduleModel
       .find({ roomId: new Types.ObjectId(roomId) })
       .exec();
@@ -69,7 +63,7 @@ export class ScheduleService {
   async patch(
     scheduleId: string,
     dto: UpdateScheduleDto,
-  ): Promise<DocumentType<ScheduleModel> | null> {
+  ): Promise<ScheduleModel | null> {
     return await this.scheduleModel
       .findByIdAndUpdate(new Types.ObjectId(scheduleId), dto, { new: true })
       .exec();

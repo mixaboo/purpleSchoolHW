@@ -1,4 +1,4 @@
-import { RoomViews } from '../../domain/models/room.model';
+import { RoomViews } from '../../domain/enums/room.enum';
 
 export class RoomCharacteristicsDto {
   size: number;
