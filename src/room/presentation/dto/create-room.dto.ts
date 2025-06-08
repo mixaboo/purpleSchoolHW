@@ -1,9 +1,16 @@
 import { RoomCharacteristicsDto } from './room-characteristics.dto';
 import { RoomTypes } from '../../domain/enums/room.enum';
-import { IsEnum, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateRoomDto {
+  @IsNotEmpty({ message: 'Room number is required' })
   @IsNumber({}, { message: 'The room number must be a number' })
   number: number;
 
