@@ -9,9 +9,9 @@ import { UpdateRoomDto } from '../src/room/presentation/dto/update-room.dto';
 import { RoomCharacteristicsDto } from '../src/room/presentation/dto/room-characteristics.dto';
 import { CreateScheduleDto } from '../src/schedule/presentation/dto/create-schedule.dto';
 import { UpdateScheduleDto } from '../src/schedule/presentation/dto/update-schedule.dto';
-import { RoomTypes, RoomViews } from '../src/room/domain/models/room.model';
 import { ROOM_NOT_FOUND } from '../src/room/infrastracture/constants/room.constants';
 import { SCHEDULE_NOT_FOUND } from '../src/schedule/infrastructure/constants/schedule.constants';
+import { RoomTypes, RoomViews } from '../src/room/domain/enums/room.enum';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -93,18 +93,37 @@ describe('AppController (e2e)', () => {
       .send(scheduleDtoWithRoomId)
       .expect(201)
       .then(({ body }: request.Response) => {
+        //console.log(body);
         createdScheduleId = body._id;
         expect(scheduleId).toBeDefined();
       });
   });
 
   it('/room/:id (PATCH) - success', async () => {
+    console.log(createdRoomId);
     return request(app.getHttpServer())
       .patch(`/room/${createdRoomId}`)
       .send(testUpdateRoomDto)
       .expect(200)
       .then(({ body }: request.Response) => {
         expect(body).toBeDefined();
+      });
+  });
+
+  it('/room/:id (PATCH) - invalid data', async () => {
+    console.log(createdRoomId);
+    return request(app.getHttpServer())
+      .patch(`/room/${createdRoomId}`)
+      .send({
+        ...testUpdateRoomDto,
+        characteristics: {
+          ...testUpdateRoomDto.characteristics,
+          bedsCount: 0,
+        },
+      })
+      .expect(400)
+      .then(({ body }: request.Response) => {
+        console.log(body);
       });
   });
 
@@ -118,11 +137,22 @@ describe('AppController (e2e)', () => {
       });
   });
 
+  it('/schedule/:id (PATCH) - invalid data', async () => {
+    return request(app.getHttpServer())
+      .patch(`/schedule/${createdScheduleId}`)
+      .send({ ...testUpdateScheduleDto, reservationDate: '20 января 2025' })
+      .expect(400)
+      .then(({ body }: request.Response) => {
+        console.log(body);
+      });
+  });
+
   it('/room/:id (GET) - success', async () => {
     return request(app.getHttpServer())
       .get(`/room/${createdRoomId}`)
       .expect(200)
       .then(({ body }: request.Response) => {
+        console.log(createdRoomId);
         expect(body).toBeDefined();
         expect(body._id).toBe(createdRoomId);
       });

@@ -8,6 +8,8 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { RoomService } from '../../application/services/room.service';
 import { CreateRoomDto } from '../dto/create-room.dto';
@@ -15,6 +17,7 @@ import { UpdateRoomDto } from '../dto/update-room.dto';
 import { ROOM_NOT_FOUND } from '../../infrastracture/constants/room.constants';
 
 @Controller('room')
+@UsePipes(new ValidationPipe())
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
