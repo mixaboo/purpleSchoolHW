@@ -6,7 +6,7 @@ import { DocumentType } from '@typegoose/typegoose';
 import { CreateScheduleDto } from '../../presentation/dto/create-schedule.dto';
 import { UpdateScheduleDto } from '../../presentation/dto/update-schedule.dto';
 import { Types } from 'mongoose';
-import { RESERVATION_ALREADY_EXISTS } from '../../infrastructure/constants/schedule.constants';
+import { SCHEDULE_ALREADY_EXISTS } from '../../infrastructure/constants/schedule.constants';
 
 @Injectable()
 export class ScheduleService {
@@ -23,7 +23,7 @@ export class ScheduleService {
       })
       .exec();
     if (sameReservation.length > 0) {
-      throw new HttpException(RESERVATION_ALREADY_EXISTS, HttpStatus.CONFLICT);
+      throw new HttpException(SCHEDULE_ALREADY_EXISTS, HttpStatus.CONFLICT);
     }
     return this.scheduleModel.create(dto);
   }

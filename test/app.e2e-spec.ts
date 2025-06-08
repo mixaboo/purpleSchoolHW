@@ -11,6 +11,7 @@ import { CreateScheduleDto } from '../src/schedule/presentation/dto/create-sched
 import { UpdateScheduleDto } from '../src/schedule/presentation/dto/update-schedule.dto';
 import { RoomTypes, RoomViews } from '../src/room/domain/models/room.model';
 import { ROOM_NOT_FOUND } from '../src/room/infrastracture/constants/room.constants';
+import { SCHEDULE_NOT_FOUND } from '../src/schedule/infrastructure/constants/schedule.constants';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
@@ -140,6 +141,36 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .then(({ body }: request.Response) => {
         expect(Number(body.roomType)).toBe(Number(RoomTypes.Suite));
+      });
+  });
+
+  it('/room/:id (DELETE) - success', async () => {
+    return request(app.getHttpServer())
+      .delete('/room/' + createdRoomId)
+      .expect(200);
+  });
+
+  it('/schedule/:id (DELETE) - success', async () => {
+    return request(app.getHttpServer())
+      .delete('/schedule/' + createdScheduleId)
+      .expect(200);
+  });
+
+  it('/room/:id (DELETE) - fail', async () => {
+    return request(app.getHttpServer())
+      .delete('/room/' + new Types.ObjectId().toHexString())
+      .expect(404, {
+        statusCode: 404,
+        message: ROOM_NOT_FOUND,
+      });
+  });
+
+  it('/schedule/:id (DELETE) - fail', async () => {
+    return request(app.getHttpServer())
+      .delete('/schedule/' + new Types.ObjectId().toHexString())
+      .expect(404, {
+        statusCode: 404,
+        message: SCHEDULE_NOT_FOUND,
       });
   });
 
