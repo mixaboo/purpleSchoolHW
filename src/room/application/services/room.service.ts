@@ -6,7 +6,6 @@ import { UpdateRoomDto } from '../../presentation/dto/update-room.dto';
 import { ROOM_NOT_FOUND } from '../../infrastracture/constants/room.constants';
 import { InjectModel } from '@nestjs/mongoose';
 
-
 @Injectable()
 export class RoomService {
   constructor(
@@ -14,8 +13,7 @@ export class RoomService {
     private readonly roomModel: Model<RoomModel>,
   ) {}
 
-
-  async get(roomId: string): Promise<DocumentType<RoomModel>> {
+  async get(roomId: string): Promise<RoomModel> {
     try {
       const foundRoom = await this.roomModel
         .findOne({ _id: new Types.ObjectId(roomId) })

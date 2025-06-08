@@ -21,5 +21,12 @@ In the end, it will be a simple AirBnb-like service
 
 ## The third task (05/07/2025)
 
-1. Make e2e-tests for all CRUD operations in two modules
-2. Tests should be positive and failure
+✅1. Make e2e-tests for all CRUD operations in two modules
+✅2. Tests should be positive and failure
+
+## The fourth task (08/07/2025)
+
+1. Add class-transformer and class-validator to the project, activate validation in controllers
+2. Add validation to all DTOs files
+3. Remake tests with custom messages
+4. Add more tests for checking validation
