@@ -14,23 +14,23 @@ export class RoomService {
   ) {}
 
   async get(roomId: string): Promise<RoomModel> {
+    let foundRoom;
+
     try {
       const foundRoom = await this.roomModel
         .findOne({ _id: new Types.ObjectId(roomId) })
         .exec();
-
-      if (!foundRoom) {
-        throw new HttpException(ROOM_NOT_FOUND, HttpStatus.NOT_FOUND);
-      }
-      return foundRoom;
     } catch (error) {
-      // Если ошибка связана с невалидным ObjectId
       if (error instanceof Error && error.name === 'BSONError') {
         throw new HttpException(ROOM_NOT_FOUND, HttpStatus.NOT_FOUND);
       }
-      // Если это другая ошибка - пробрасываем её дальше
       throw error;
     }
+
+    if (!foundRoom) {
+      throw new HttpException(ROOM_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    return foundRoom;
   }
 
   async delete(roomId: string): Promise<RoomModel | null> {
