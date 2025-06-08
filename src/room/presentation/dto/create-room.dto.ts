@@ -1,12 +1,6 @@
 import { RoomCharacteristicsDto } from './room-characteristics.dto';
 import { RoomTypes } from '../../domain/enums/room.enum';
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  ValidateNested,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateRoomDto {
