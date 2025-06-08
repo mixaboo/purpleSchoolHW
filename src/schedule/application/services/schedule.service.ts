@@ -71,7 +71,11 @@ export class ScheduleService {
     dto: UpdateScheduleDto,
   ): Promise<DocumentType<ScheduleModel> | null> {
     return await this.scheduleModel
-      .findByIdAndUpdate(new Types.ObjectId(scheduleId), dto, { new: true })
+      .findByIdAndUpdate(
+        new Types.ObjectId(scheduleId),
+        { $set: dto },
+        { new: true },
+      )
       .exec();
   }
 }

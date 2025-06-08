@@ -18,3 +18,8 @@ In the end, it will be a simple AirBnb-like service
 ✅— For simplicity of booking, use only date without time
 ✅— The room entry has data: number, type, view from the window, soft-delete field
 ✅— The schedule entry has data: roomId, date, status of booking
+
+## The third task (05/07/2025)
+
+1. Make e2e-tests for all CRUD operations in two modules
+2. Tests should be positive and failure
