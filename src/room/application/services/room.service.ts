@@ -17,7 +17,7 @@ export class RoomService {
     let foundRoom;
 
     try {
-      const foundRoom = await this.roomModel
+      foundRoom = await this.roomModel
         .findOne({ _id: new Types.ObjectId(roomId) })
         .exec();
     } catch (error) {

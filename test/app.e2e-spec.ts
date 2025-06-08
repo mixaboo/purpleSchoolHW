@@ -93,18 +93,37 @@ describe('AppController (e2e)', () => {
       .send(scheduleDtoWithRoomId)
       .expect(201)
       .then(({ body }: request.Response) => {
+        //console.log(body);
         createdScheduleId = body._id;
         expect(scheduleId).toBeDefined();
       });
   });
 
   it('/room/:id (PATCH) - success', async () => {
+    console.log(createdRoomId);
     return request(app.getHttpServer())
       .patch(`/room/${createdRoomId}`)
       .send(testUpdateRoomDto)
       .expect(200)
       .then(({ body }: request.Response) => {
         expect(body).toBeDefined();
+      });
+  });
+
+  it('/room/:id (PATCH) - invalid data', async () => {
+    console.log(createdRoomId);
+    return request(app.getHttpServer())
+      .patch(`/room/${createdRoomId}`)
+      .send({
+        ...testUpdateRoomDto,
+        characteristics: {
+          ...testUpdateRoomDto.characteristics,
+          bedsCount: 0,
+        },
+      })
+      .expect(400)
+      .then(({ body }: request.Response) => {
+        console.log(body);
       });
   });
 
@@ -118,11 +137,22 @@ describe('AppController (e2e)', () => {
       });
   });
 
+  it('/schedule/:id (PATCH) - invalid data', async () => {
+    return request(app.getHttpServer())
+      .patch(`/schedule/${createdScheduleId}`)
+      .send({ ...testUpdateScheduleDto, reservationDate: '20 января 2025' })
+      .expect(400)
+      .then(({ body }: request.Response) => {
+        console.log(body);
+      });
+  });
+
   it('/room/:id (GET) - success', async () => {
     return request(app.getHttpServer())
       .get(`/room/${createdRoomId}`)
       .expect(200)
       .then(({ body }: request.Response) => {
+        console.log(createdRoomId);
         expect(body).toBeDefined();
         expect(body._id).toBe(createdRoomId);
       });
