@@ -1,19 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { RoomModel } from '../../domain/models/room.model';
-import { ReturnModelType } from '@typegoose/typegoose/lib/types';
 import { CreateRoomDto } from '../../presentation/dto/create-room.dto';
-import { Types } from 'mongoose';
-import { InjectModel } from '@m8a/nestjs-typegoose';
-import { DocumentType } from '@typegoose/typegoose';
+import { Model, Types } from 'mongoose';
 import { UpdateRoomDto } from '../../presentation/dto/update-room.dto';
 import { ROOM_NOT_FOUND } from '../../infrastracture/constants/room.constants';
+import { InjectModel } from '@nestjs/mongoose';
+
 
 @Injectable()
 export class RoomService {
   constructor(
-    @InjectModel(RoomModel)
-    private readonly roomModel: ReturnModelType<typeof RoomModel>,
+    @InjectModel('Room')
+    private readonly roomModel: Model<RoomModel>,
   ) {}
+
 
   async get(roomId: string): Promise<DocumentType<RoomModel>> {
     try {
@@ -35,7 +35,7 @@ export class RoomService {
     }
   }
 
-  async delete(roomId: string): Promise<DocumentType<RoomModel> | null> {
+  async delete(roomId: string): Promise<RoomModel | null> {
     return await this.roomModel
       .findByIdAndUpdate(
         new Types.ObjectId(roomId),
@@ -45,14 +45,11 @@ export class RoomService {
       .exec();
   }
 
-  async create(dto: CreateRoomDto): Promise<DocumentType<RoomModel>> {
+  async create(dto: CreateRoomDto): Promise<RoomModel> {
     return this.roomModel.create(dto);
   }
 
-  async patch(
-    roomId: string,
-    dto: UpdateRoomDto,
-  ): Promise<DocumentType<RoomModel> | null> {
+  async patch(roomId: string, dto: UpdateRoomDto): Promise<RoomModel | null> {
     return await this.roomModel
       .findByIdAndUpdate(new Types.ObjectId(roomId), dto, { new: true })
       .exec();

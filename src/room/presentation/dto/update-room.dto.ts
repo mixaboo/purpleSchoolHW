@@ -1,5 +1,5 @@
 import { RoomCharacteristicsDto } from './room-characteristics.dto';
-import { RoomTypes } from '../../domain/models/room.model';
+import { RoomTypes } from '../../domain/enums/room.enum';
 
 export class UpdateRoomDto {
   characteristics: RoomCharacteristicsDto;
