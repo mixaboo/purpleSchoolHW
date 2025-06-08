@@ -158,11 +158,17 @@ describe('AppController (e2e)', () => {
       });
   });
 
-  it('/room/:id (GET) - fail', async () => {
-    return request(app.getHttpServer()).get('/room/12345').expect(404, {
-      statusCode: 404,
-      message: ROOM_NOT_FOUND,
-    });
+  it('/room/:id (GET) - invalid id', async () => {
+    return request(app.getHttpServer()).get('/room/12345').expect(400);
+  });
+
+  it('/room/:id (GET) - bad id, fail', async () => {
+    return request(app.getHttpServer())
+      .get('/room/' + new Types.ObjectId().toHexString())
+      .expect(404, {
+        statusCode: 404,
+        message: ROOM_NOT_FOUND,
+      });
   });
 
   it('/room/:id (GET) - changes are successful', async () => {
