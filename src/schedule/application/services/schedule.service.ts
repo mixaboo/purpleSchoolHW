@@ -2,9 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateScheduleDto } from '../../presentation/dto/create-schedule.dto';
 import { UpdateScheduleDto } from '../../presentation/dto/update-schedule.dto';
 import { Model, Types } from 'mongoose';
-import { RESERVATION_ALREADY_EXISTS } from '../../infrastructure/constants/schedule.constants';
 import { InjectModel } from '@nestjs/mongoose';
 import { ScheduleModel } from '../../domain/models/schedule.model';
+import { SCHEDULE_ALREADY_EXISTS } from '../../infrastructure/constants/schedule.constants';
+
 
 @Injectable()
 export class ScheduleService {
@@ -21,7 +22,7 @@ export class ScheduleService {
       })
       .exec();
     if (sameReservation.length > 0) {
-      throw new HttpException(RESERVATION_ALREADY_EXISTS, HttpStatus.CONFLICT);
+      throw new HttpException(SCHEDULE_ALREADY_EXISTS, HttpStatus.CONFLICT);
     }
     return this.scheduleModel.create(dto);
   }
@@ -65,7 +66,11 @@ export class ScheduleService {
     dto: UpdateScheduleDto,
   ): Promise<ScheduleModel | null> {
     return await this.scheduleModel
-      .findByIdAndUpdate(new Types.ObjectId(scheduleId), dto, { new: true })
+      .findByIdAndUpdate(
+        new Types.ObjectId(scheduleId),
+        { $set: dto },
+        { new: true },
+      )
       .exec();
   }
 }

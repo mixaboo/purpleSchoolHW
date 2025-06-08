@@ -12,7 +12,7 @@ import {
 import { CreateScheduleDto } from '../dto/create-schedule.dto';
 import { ScheduleService } from '../../application/services/schedule.service';
 import { UpdateScheduleDto } from '../dto/update-schedule.dto';
-import { RESERVATION_NOT_FOUND } from '../../infrastructure/constants/schedule.constants';
+import { SCHEDULE_NOT_FOUND } from '../../infrastructure/constants/schedule.constants';
 
 @Controller('schedule')
 export class ScheduleController {
@@ -27,15 +27,19 @@ export class ScheduleController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return this.scheduleService.delete(id);
+  async delete(@Param('id') scheduleId: string) {
+    const deletedSchedule = await this.scheduleService.delete(scheduleId);
+    if (!deletedSchedule) {
+      throw new HttpException(SCHEDULE_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    return this.scheduleService.delete(scheduleId);
   }
 
   @Delete('byRoom/:roomId')
   async deleteByRoomId(@Param('roomId') roomId: string) {
     const deletedSchedule = await this.scheduleService.deleteByRoomId(roomId);
     if (!deletedSchedule) {
-      throw new HttpException(RESERVATION_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new HttpException(SCHEDULE_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
     return this.scheduleService.deleteByRoomId(roomId);
   }
