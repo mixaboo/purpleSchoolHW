@@ -2,31 +2,31 @@ import { RoomViews } from '../enums/room.enum';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export class RoomCharacteristics {
-  @Prop()
+  @Prop({ type: Number })
   size: number;
 
-  @Prop()
+  @Prop({ type: Number })
   bedsCount: number;
 
-  @Prop()
+  @Prop({ type: Boolean })
   babyBedAvailable: boolean;
 
-  @Prop({ enum: RoomViews })
+  @Prop({ type: String, enum: RoomViews })
   view: RoomViews;
 }
 
 @Schema({ timestamps: true })
 export class RoomModel {
-  @Prop()
+  @Prop({ type: Number })
   number: number;
 
-  @Prop()
+  @Prop({ type: String })
   roomType: string;
 
   @Prop({ type: () => [RoomCharacteristics], _id: false })
   characteristics: RoomCharacteristics;
 
-  @Prop({ default: null })
+  @Prop({ type: Date, default: null })
   deletedAt: Date;
 }
 

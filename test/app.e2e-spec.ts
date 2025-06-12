@@ -143,7 +143,7 @@ describe('AppController (e2e)', () => {
       .send({ ...testUpdateScheduleDto, reservationDate: '20 января 2025' })
       .expect(400)
       .then(({ body }: request.Response) => {
-        console.log(body);
+        //console.log(body);
       });
   });
 
@@ -152,7 +152,7 @@ describe('AppController (e2e)', () => {
       .get(`/room/${createdRoomId}`)
       .expect(200)
       .then(({ body }: request.Response) => {
-        console.log(createdRoomId);
+        //console.log(createdRoomId);
         expect(body).toBeDefined();
         expect(body._id).toBe(createdRoomId);
       });
