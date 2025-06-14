@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { UserRole } from '../../domain/enums/user.enum';
+import { Role } from '../../domain/enums/role.enum';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -16,9 +16,9 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
-  @IsEnum(UserRole, {
+  @IsEnum(Role, {
     message: (value) =>
-      `Role must be one of: ${Object.values(UserRole).join(', ')}. Got: ${value.value}`,
+      `Role must be one of: ${Object.values(Role).join(', ')}. Got: ${value.value}`,
   })
-  role: UserRole;
+  role: Role;
 }

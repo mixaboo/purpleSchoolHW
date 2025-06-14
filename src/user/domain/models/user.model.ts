@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { UserRole } from '../enums/user.enum';
+import { Role } from '../enums/role.enum';
 
 @Schema({ timestamps: true })
 export class UserModel {
@@ -15,8 +15,8 @@ export class UserModel {
   @Prop({ type: String, required: true })
   passwordHash: string;
 
-  @Prop({ type: String, enum: UserRole })
-  role: string;
+  @Prop({ type: String, enum: Role, default: Role.User })
+  role: Role;
 
   @Prop({ type: Date, default: null })
   deletedAt: Date;

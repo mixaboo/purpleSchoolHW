@@ -15,6 +15,8 @@ import { CreateScheduleDto } from '../dto/create-schedule.dto';
 import { ScheduleService } from '../../application/services/schedule.service';
 import { UpdateScheduleDto } from '../dto/update-schedule.dto';
 import { SCHEDULE_NOT_FOUND } from '../../infrastructure/constants/schedule.constants';
+import { Roles } from '../../../user/presentation/decorators/roles.decorator';
+import { Role } from '../../../user/domain/enums/role.enum';
 
 @Controller('schedule')
 @UsePipes(new ValidationPipe())
@@ -29,6 +31,7 @@ export class ScheduleController {
     return this.scheduleService.create(dto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   async delete(@Param('id') scheduleId: string) {
     const deletedSchedule = await this.scheduleService.delete(scheduleId);
@@ -38,6 +41,7 @@ export class ScheduleController {
     return this.scheduleService.delete(scheduleId);
   }
 
+  @Roles(Role.Admin)
   @Delete('byRoom/:roomId')
   async deleteByRoomId(@Param('roomId') roomId: string) {
     const deletedSchedule = await this.scheduleService.deleteByRoomId(roomId);
