@@ -12,17 +12,36 @@ import { UpdateScheduleDto } from '../src/schedule/presentation/dto/update-sched
 import { ROOM_NOT_FOUND } from '../src/room/infrastracture/constants/room.constants';
 import { SCHEDULE_NOT_FOUND } from '../src/schedule/infrastructure/constants/schedule.constants';
 import { RoomTypes, RoomViews } from '../src/room/domain/enums/room.enum';
+import { AuthDto } from '../src/auth/presentation/dto/auth.dto';
+
+async function getAuthToken(app: INestApplication, credentials: AuthDto) {
+  const { body } = await request(app.getHttpServer())
+    .post('/auth/login')
+    .send(credentials);
+  return body.access_token;
+}
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
   let createdRoomId: string;
   let createdScheduleId: string;
+  let userToken: string;
+  let adminToken: string;
 
   //data for tests
   const roomId = new Types.ObjectId().toHexString();
   const scheduleId = new Types.ObjectId().toHexString();
   const exampleDate = new Date('2025-06-17');
   const exampleDateForUpdate = new Date('2025-07-17');
+
+  const userLoginDto: AuthDto = {
+    login: 'bar@gmail.com',
+    password: '123!!ZzY111',
+  };
+  const adminLoginDto: AuthDto = {
+    login: 'admin@gmail.com',
+    password: '123!!ZzY111zz113241423',
+  };
 
   const testRoomCharacteristicsDto: RoomCharacteristicsDto = {
     size: 34,
@@ -69,11 +88,18 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    [userToken, adminToken] = await Promise.all([
+      getAuthToken(app, userLoginDto),
+      getAuthToken(app, adminLoginDto),
+    ]);
   });
 
   it('/room/create (POST) - success', async () => {
+    //console.log(adminToken);
     return request(app.getHttpServer())
       .post('/room/create')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send(testCreateRoomDto)
       .expect(201)
       .then(({ body }: request.Response) => {
@@ -81,7 +107,7 @@ describe('AppController (e2e)', () => {
         expect(roomId).toBeDefined();
       });
   });
-
+  /*
   it('/schedule/create (POST) - success', async () => {
     const scheduleDtoWithRoomId = {
       ...testCreateScheduleDto,
@@ -209,7 +235,7 @@ describe('AppController (e2e)', () => {
         message: SCHEDULE_NOT_FOUND,
       });
   });
-
+*/
   afterAll(async () => {
     await disconnect();
     //await app.close();

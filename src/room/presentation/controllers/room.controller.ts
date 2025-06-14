@@ -19,10 +19,11 @@ import { ROOM_NOT_FOUND } from '../../infrastracture/constants/room.constants';
 import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt.guard';
 import { Roles } from '../../../user/presentation/decorators/roles.decorator';
 import { Role } from '../../../user/domain/enums/role.enum';
+import { RolesGuard } from '../../../user/infrastracture/guards/roles.guard';
 
 @Controller('room')
 @UsePipes(new ValidationPipe())
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
