@@ -8,7 +8,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from './core/database/configs/mongo.config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { UserService } from './user/application/services/user.service';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './user/infrastracture/guards/roles.guard';
 

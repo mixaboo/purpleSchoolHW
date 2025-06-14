@@ -9,8 +9,6 @@ import { UpdateRoomDto } from '../src/room/presentation/dto/update-room.dto';
 import { RoomCharacteristicsDto } from '../src/room/presentation/dto/room-characteristics.dto';
 import { CreateScheduleDto } from '../src/schedule/presentation/dto/create-schedule.dto';
 import { UpdateScheduleDto } from '../src/schedule/presentation/dto/update-schedule.dto';
-import { ROOM_NOT_FOUND } from '../src/room/infrastracture/constants/room.constants';
-import { SCHEDULE_NOT_FOUND } from '../src/schedule/infrastructure/constants/schedule.constants';
 import { RoomTypes, RoomViews } from '../src/room/domain/enums/room.enum';
 import { AuthDto } from '../src/auth/presentation/dto/auth.dto';
 
