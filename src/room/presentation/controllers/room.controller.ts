@@ -17,7 +17,6 @@ import { CreateRoomDto } from '../dto/create-room.dto';
 import { UpdateRoomDto } from '../dto/update-room.dto';
 import { ROOM_NOT_FOUND } from '../../infrastracture/constants/room.constants';
 import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt.guard';
-import { RolesGuard } from '../../../user/infrastracture/guards/roles.guard';
 import { Roles } from '../../../user/presentation/decorators/roles.decorator';
 import { Role } from '../../../user/domain/enums/role.enum';
 
