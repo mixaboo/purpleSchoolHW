@@ -179,10 +179,7 @@ describe('AppController (e2e)', () => {
       .patch(`/schedule/${createdScheduleId}`)
       .set('Authorization', `Bearer ${adminToken}`)
       .send({ ...testUpdateScheduleDto, reservationDate: '20 января 2025' })
-      .expect(400)
-      .then(({ body }: request.Response) => {
-        //console.log(body);
-      });
+      .expect(400);
   });
 
   it('/room/:id (GET) - success', async () => {
