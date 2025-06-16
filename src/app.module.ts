@@ -15,7 +15,7 @@ import { RolesGuard } from './user/infrastracture/guards/roles.guard';
   imports: [
     ScheduleModule,
     RoomModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({}),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -27,10 +27,10 @@ import { RolesGuard } from './user/infrastracture/guards/roles.guard';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    //{
+    //  provide: APP_GUARD,
+    //  useClass: RolesGuard,
+    //},
   ],
 })
 export class AppModule {}

@@ -12,14 +12,14 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { RoomService } from '../../application/services/room.service';
 import { CreateRoomDto } from '../dto/create-room.dto';
 import { UpdateRoomDto } from '../dto/update-room.dto';
 import { ROOM_NOT_FOUND } from '../../infrastracture/constants/room.constants';
-import { JwtAuthGuard } from '../../../auth/infrastructure/guards/jwt.guard';
-import { Roles } from '../../../user/presentation/decorators/roles.decorator';
-import { Role } from '../../../user/domain/enums/role.enum';
-import { RolesGuard } from '../../../user/infrastracture/guards/roles.guard';
+import { JwtAuthGuard } from '@app/auth/infrastructure/guards/jwt.guard';
+import { Roles } from '@app/user/presentation/decorators/roles.decorator';
+import { Role } from '@app/user/domain/enums/role.enum';
+import { RolesGuard } from '@app/user/infrastracture/guards/roles.guard';
+import { RoomService } from '@app/room/application/services/room.service';
 
 @Controller('room')
 @UsePipes(new ValidationPipe())

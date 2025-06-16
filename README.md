@@ -46,6 +46,6 @@ In the end, it will be a simple AirBnb-like service.
 ✅ 1. Create a new module Users (data: email, password, name, phone, role (admin/user))  
 ✅ 2. Create a new module Auth (method login, register)  
 ✅ 3. Add JWT authorization: with guards, strategy.  
-4. Some methods are available only for admins, some only for users. DOC: https://docs.nestjs.com/security/authorization  
+✅ 4. Some methods are available only for admins, some only for users. DOC: https://docs.nestjs.com/security/authorization  
 
 ---

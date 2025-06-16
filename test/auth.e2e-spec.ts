@@ -1,10 +1,11 @@
-import { AuthDto } from '../src/auth/presentation/dto/auth.dto';
+import { AuthDto } from '@app/auth/presentation/dto/auth.dto';
 import { disconnect } from 'mongoose';
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
+
 import { INestApplication } from '@nestjs/common';
 import { App } from 'supertest/types';
+import { AppModule } from '../src/app.module';
 import {
   USER_NOT_FOUND_ERROR,
   WRONG_PASSWORD_ERROR,
@@ -18,12 +19,6 @@ const adminLoginDto: AuthDto = {
   login: 'admin@gmail.com',
   password: '123!!ZzY111zz113241423',
 };
-
-// user token
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6eyJlbWFpbCI6ImJhckBnbWFpbC5jb20ifSwiaWF0IjoxNzQ5OTA2MjE4fQ.iZdiAOVM2gLzDz8s_LPTohRdFLz1ysYvCWBVVblWU4k
-
-//admin token
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9LCJpYXQiOjE3NDk5MDYzNjB9.SJGp9bBgMu3PFc6KLbETOFNG5czJjj0XHPNnYljiJks
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication<App>;
