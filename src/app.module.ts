@@ -6,10 +6,8 @@ import { RoomModule } from './room/room.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from './core/database/configs/mongo.config';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './user/infrastracture/guards/roles.guard';
+import { UserModule } from '@app/user/user.module';
+import { AuthModule } from '@app/auth/auth.module';
 
 @Module({
   imports: [
@@ -25,12 +23,6 @@ import { RolesGuard } from './user/infrastracture/guards/roles.guard';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    //{
-    //  provide: APP_GUARD,
-    //  useClass: RolesGuard,
-    //},
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
