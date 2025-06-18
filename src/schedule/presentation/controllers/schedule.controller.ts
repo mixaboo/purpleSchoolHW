@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -20,6 +21,7 @@ import { Roles } from '@app/user/presentation/decorators/roles.decorator';
 import { Role } from '@app/user/domain/enums/role.enum';
 import { JwtAuthGuard } from '@app/auth/infrastructure/guards/jwt.guard';
 import { RolesGuard } from '@app/user/infrastracture/guards/roles.guard';
+import { MonthlyReportDto } from '@app/schedule/presentation/dto/monthlyReport.dto';
 
 @Controller('schedule')
 @UsePipes(new ValidationPipe())
@@ -36,13 +38,14 @@ export class ScheduleController {
   }
 
   @Roles(Role.Admin)
-  @Delete(':id')
-  async delete(@Param('id') scheduleId: string) {
-    const deletedSchedule = await this.scheduleService.delete(scheduleId);
-    if (!deletedSchedule) {
-      throw new HttpException(SCHEDULE_NOT_FOUND, HttpStatus.NOT_FOUND);
-    }
-    return this.scheduleService.delete(scheduleId);
+  @Get('monthly-report')
+  async getMonthlyReport(@Query() query: MonthlyReportDto) {
+    return this.scheduleService.getMonthlyReport(query.month, query.year);
+  }
+
+  @Get('byRoom/:roomId')
+  async getByRoomId(@Param('roomId') roomId: string) {
+    return this.scheduleService.getByRoomId(roomId);
   }
 
   @Roles(Role.Admin)
@@ -60,13 +63,18 @@ export class ScheduleController {
     return this.scheduleService.get(id);
   }
 
-  @Get('byRoom/:roomId')
-  async getByRoomId(@Param('roomId') roomId: string) {
-    return this.scheduleService.getByRoomId(roomId);
-  }
-
   @Patch(':id')
   async patch(@Param('id') id: string, @Body() dto: UpdateScheduleDto) {
     return this.scheduleService.patch(id, dto);
+  }
+
+  @Roles(Role.Admin)
+  @Delete(':id')
+  async delete(@Param('id') scheduleId: string) {
+    const deletedSchedule = await this.scheduleService.delete(scheduleId);
+    if (!deletedSchedule) {
+      throw new HttpException(SCHEDULE_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+    return this.scheduleService.delete(scheduleId);
   }
 }

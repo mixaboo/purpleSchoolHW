@@ -5,11 +5,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { INestApplication } from '@nestjs/common';
 import { App } from 'supertest/types';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '@app/app.module';
 import {
   USER_NOT_FOUND_ERROR,
   WRONG_PASSWORD_ERROR,
-} from '../src/auth/infrastructure/constants/auth.constants';
+} from '@app/auth/infrastructure/constants/auth.constants';
 
 const userLoginDto: AuthDto = {
   login: 'bar@gmail.com',

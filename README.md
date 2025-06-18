@@ -49,3 +49,9 @@ In the end, it will be a simple AirBnb-like service.
 ✅ 4. Some methods are available only for admins, some only for users. DOC: https://docs.nestjs.com/security/authorization  
 
 ---
+
+## The sixth task (16/07/2025)
+
+✅ 1. Create a method with a report from MongoDB: how much reservation has every room in a chosen month
+
+---

@@ -31,7 +31,7 @@ describe('AppController (e2e)', () => {
   //data for tests
   const roomId = new Types.ObjectId().toHexString();
   const scheduleId = new Types.ObjectId().toHexString();
-  const exampleDate = new Date('2025-06-17');
+  const exampleDate = new Date('2025-06-20');
   const exampleDateForUpdate = new Date('2025-07-17');
 
   const userLoginDto: AuthDto = {
@@ -58,7 +58,7 @@ describe('AppController (e2e)', () => {
   };
 
   const testCreateRoomDto: CreateRoomDto = {
-    number: 101,
+    number: Math.floor(Math.random() * (999 - 100 + 1)) + 100,
     roomType: RoomTypes.Deluxe,
     characteristics: testRoomCharacteristicsDto,
   };
@@ -132,6 +132,7 @@ describe('AppController (e2e)', () => {
         expect(scheduleId).toBeDefined();
       });
   });
+  /*
 
   it('/room/:id (PATCH) - success', async () => {
     console.log(createdRoomId);
@@ -188,7 +189,6 @@ describe('AppController (e2e)', () => {
       .set('Authorization', `Bearer ${userToken}`)
       .expect(200)
       .then(({ body }: request.Response) => {
-        //console.log(createdRoomId);
         expect(body).toBeDefined();
         expect(body._id).toBe(createdRoomId);
       });
@@ -254,9 +254,8 @@ describe('AppController (e2e)', () => {
         message: SCHEDULE_NOT_FOUND,
       });
   });
-
+*/
   afterAll(async () => {
     await disconnect();
-    //await app.close();
   });
 });

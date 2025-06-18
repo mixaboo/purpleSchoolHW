@@ -12,7 +12,7 @@ export class ScheduleModel {
   @Prop({ type: Boolean })
   paid: boolean;
 
-  @Prop({ type: () => Types.ObjectId, required: true })
+  @Prop({ type: () => Types.ObjectId, ref: 'Room', required: true })
   roomId: Types.ObjectId;
 
   @Prop({ type: Date, default: null })
