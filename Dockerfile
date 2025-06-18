@@ -1,9 +1,8 @@
 FROM node:24-alpine
 WORKDIR /opt/app
-ADD package.json package.json
-ADD tsconfig.json tsconfig.json
+COPY package*.json ./
 RUN npm install
-ADD . .
+COPY . .
 RUN npm run build
-RUN npn prune --production
+RUN npm prune --production
 CMD ["node", "./dist/main.js"]

@@ -132,7 +132,6 @@ describe('AppController (e2e)', () => {
         expect(scheduleId).toBeDefined();
       });
   });
-  /*
 
   it('/room/:id (PATCH) - success', async () => {
     console.log(createdRoomId);
@@ -254,7 +253,7 @@ describe('AppController (e2e)', () => {
         message: SCHEDULE_NOT_FOUND,
       });
   });
-*/
+
   afterAll(async () => {
     await disconnect();
   });
