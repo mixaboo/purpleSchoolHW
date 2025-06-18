@@ -5,6 +5,7 @@ import { Model, Types } from 'mongoose';
 import { UpdateRoomDto } from '../../presentation/dto/update-room.dto';
 import { ROOM_NOT_FOUND } from '../../infrastracture/constants/room.constants';
 import { InjectModel } from '@nestjs/mongoose';
+import { isValidObjectId } from 'mongoose';
 
 @Injectable()
 export class RoomService {
@@ -14,19 +15,11 @@ export class RoomService {
   ) {}
 
   async get(roomId: string): Promise<RoomModel> {
-    let foundRoom;
-
-    try {
-      foundRoom = await this.roomModel
-        .findOne({ _id: new Types.ObjectId(roomId) })
-        .exec();
-    } catch (error) {
-      if (error instanceof Error && error.name === 'BSONError') {
-        throw new HttpException(ROOM_NOT_FOUND, HttpStatus.NOT_FOUND);
-      }
-      throw error;
+    if (!isValidObjectId(roomId)) {
+      throw new HttpException('Invalid room ID format', HttpStatus.BAD_REQUEST);
     }
 
+    const foundRoom = await this.roomModel.findById(roomId).exec();
     if (!foundRoom) {
       throw new HttpException(ROOM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }

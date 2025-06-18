@@ -3,19 +3,19 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({ timestamps: true })
 export class ScheduleModel {
-  @Prop()
+  @Prop({ type: Date, required: true })
   reservationDate: Date;
 
-  @Prop({ default: true })
+  @Prop({ type: Boolean, default: true })
   active: boolean;
 
-  @Prop()
+  @Prop({ type: Boolean })
   paid: boolean;
 
-  @Prop({ type: () => Types.ObjectId, required: true })
+  @Prop({ type: () => Types.ObjectId, ref: 'Room', required: true })
   roomId: Types.ObjectId;
 
-  @Prop({ default: null })
+  @Prop({ type: Date, default: null })
   deletedAt: Date;
 }
 
