@@ -21,4 +21,5 @@ services:
         - 27017:27017
       volumes:
         - ./mongo-data:/data/db
+        - ./.env:/opt/app/.env
       command: --wiredTigerCacheSizeGB 1.5
