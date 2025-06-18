@@ -10,6 +10,7 @@ services:
     volumes:
       - ./.env:/opt/app/.env
 
+
   mongo:
       image: mongo
       container_name: mongo
