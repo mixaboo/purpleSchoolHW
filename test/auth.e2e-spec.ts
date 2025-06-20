@@ -12,17 +12,16 @@ import {
 } from '@app/auth/infrastructure/constants/auth.constants';
 
 const userLoginDto: AuthDto = {
-  login: 'bar@gmail.com',
-  password: '123!!ZzY111',
+  login: 'user12@gmail.com',
+  password: '123',
 };
 const adminLoginDto: AuthDto = {
-  login: 'admin@gmail.com',
-  password: '123!!ZzY111zz113241423',
+  login: 'root12@gmail.com',
+  password: '123123',
 };
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication<App>;
-  let token: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({

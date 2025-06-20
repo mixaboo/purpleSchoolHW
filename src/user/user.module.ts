@@ -7,6 +7,10 @@ import { UserController } from './presentation/controllers/user.controller';
 @Module({
   providers: [UserService],
   controllers: [UserController],
-  imports: [MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])],
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'User', schema: UserSchema, collection: 'User' },
+    ]),
+  ],
 })
 export class UserModule {}

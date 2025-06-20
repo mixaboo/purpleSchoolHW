@@ -2,7 +2,7 @@ name: Publish Docker
 
 on:
   push:
-    branches: [4-continue]
+    branches: [4-production]
 
 permissions:
   contents: read

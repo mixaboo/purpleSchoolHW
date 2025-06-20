@@ -35,12 +35,12 @@ describe('AppController (e2e)', () => {
   const exampleDateForUpdate = new Date('2025-07-17');
 
   const userLoginDto: AuthDto = {
-    login: 'bar@gmail.com',
-    password: '123!!ZzY111',
+    login: 'user12@gmail.com',
+    password: '123',
   };
   const adminLoginDto: AuthDto = {
-    login: 'admin@gmail.com',
-    password: '123!!ZzY111zz113241423',
+    login: 'root12@gmail.com',
+    password: '123123',
   };
 
   const testRoomCharacteristicsDto: RoomCharacteristicsDto = {
@@ -101,9 +101,17 @@ describe('AppController (e2e)', () => {
       .set('Authorization', `Bearer ${adminToken}`)
       .send(testCreateRoomDto)
       .expect(201)
-      .then(({ body }: request.Response) => {
+      .then(async ({ body }: request.Response) => {
         createdRoomId = body._id;
         expect(roomId).toBeDefined();
+
+        const response = await request(app.getHttpServer())
+          .get(`/room/${createdRoomId}`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200);
+
+        expect(response.body.number).toBe(testCreateRoomDto.number);
+        expect(response.body._id).toBe(createdRoomId);
       });
   });
 

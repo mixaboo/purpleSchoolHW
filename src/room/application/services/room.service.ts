@@ -45,4 +45,25 @@ export class RoomService {
       .findByIdAndUpdate(new Types.ObjectId(roomId), dto, { new: true })
       .exec();
   }
+
+  async updatePictures(
+    roomId: string,
+    picturesUrl: string[],
+  ): Promise<RoomModel | null> {
+    return await this.roomModel
+      .findByIdAndUpdate(
+        roomId,
+        {
+          $push: {
+            pictures: {
+              $each: picturesUrl,
+            },
+          },
+        },
+        {
+          new: true,
+        },
+      )
+      .exec();
+  }
 }

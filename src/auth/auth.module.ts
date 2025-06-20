@@ -14,7 +14,9 @@ import { UserService } from '../user/application/services/user.service';
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, UserService],
   imports: [
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: 'User', schema: UserSchema, collection: 'User' },
+    ]),
     ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
