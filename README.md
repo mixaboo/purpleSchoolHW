@@ -61,3 +61,11 @@ In the end, it will be a simple AirBnb-like service.
 ✅ 1. Create a new field in Room module for saving pictures of rooms - it should be a array of URLs.
 ✅ 2. Create a new Files module for hosting new pictures, create a method for uploading and returning to FE.
 ✅ 3. Use Sharp lib for converting pictures to 500 px with saving proportions.
+
+---
+
+## The eighth task (23/07/2025)
+
+✅ 1. Connect Telegraf to the project
+✅ 2. Send notification to TG chat when someone book/cancel the room with information: name and phone number of the user.
+
