@@ -22,19 +22,38 @@ import { Role } from '@app/user/domain/enums/role.enum';
 import { JwtAuthGuard } from '@app/auth/infrastructure/guards/jwt.guard';
 import { RolesGuard } from '@app/user/infrastracture/guards/roles.guard';
 import { MonthlyReportDto } from '@app/schedule/presentation/dto/monthlyReport.dto';
+import { TelegramService } from '@app/telegram/application/services/telegram.service';
+import { User } from '@app/user/presentation/decorators/user-email.decorator';
+import { format } from 'date-fns';
 
 @Controller('schedule')
 @UsePipes(new ValidationPipe())
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class ScheduleController {
-  constructor(private readonly scheduleService: ScheduleService) {}
+  constructor(
+    private readonly scheduleService: ScheduleService,
+    private readonly telegramService: TelegramService,
+  ) {}
 
   @Post('create')
-  async create(@Body() dto: CreateScheduleDto) {
+  async create(
+    @Body() dto: CreateScheduleDto,
+    @User() user: { email: string },
+  ) {
     if (dto.roomId === undefined) {
       throw new HttpException('Room id is required', HttpStatus.BAD_REQUEST);
     }
-    return this.scheduleService.create(dto);
+    const reservation = await this.scheduleService.create(dto, user.email);
+
+    const message =
+      `✅ You got a new reservation \n` +
+      `Client: ${reservation.userInfo!.name} \n` +
+      `Phone: ${reservation.userInfo!.phone} \n` +
+      `Date: ${format(reservation.reservationDate, 'dd.MM.yyyy')} \n` +
+      `Room number: n. ${reservation.roomInfo!.roomNumber} \n`;
+
+    await this.telegramService.sendMessage(message);
+    return reservation;
   }
 
   @Roles(Role.Admin)
@@ -70,11 +89,25 @@ export class ScheduleController {
 
   @Roles(Role.Admin)
   @Delete(':id')
-  async delete(@Param('id') scheduleId: string) {
-    const deletedSchedule = await this.scheduleService.delete(scheduleId);
+  async delete(
+    @Param('id') scheduleId: string,
+    @User() user: { email: string },
+  ) {
+    const deletedSchedule = await this.scheduleService.delete(
+      scheduleId,
+      user.email,
+    );
     if (!deletedSchedule) {
       throw new HttpException(SCHEDULE_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
-    return this.scheduleService.delete(scheduleId);
+
+    const message =
+      `❌ Reservation was cancelled \n` +
+      `Client: ${deletedSchedule.userInfo!.name} \n` +
+      `Phone: ${deletedSchedule.userInfo!.phone} \n` +
+      `Date: ${format(deletedSchedule.reservationDate, 'dd.MM.yyyy')} \n`;
+
+    await this.telegramService.sendMessage(message);
+    return deletedSchedule;
   }
 }
