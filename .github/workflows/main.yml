@@ -2,18 +2,22 @@ name: Publish Docker
 
 on:
   push:
-    branches: [4-continue]
+    branches: [4-production]
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: Publish to registry
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
-          registry: docker.pkg.github.com
-          name: docker.pkg.github.com/mixaboo/purpleSchoolHW/purpleSchoolhw
+          registry: ghcr.io
+          name: docker.pkg.github.com/mixaboo/purpleSchoolHW/purpleschoolhw
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: "develop"

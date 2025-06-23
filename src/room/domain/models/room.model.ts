@@ -26,6 +26,9 @@ export class RoomModel {
   @Prop({ type: () => [RoomCharacteristics], _id: false })
   characteristics: RoomCharacteristics;
 
+  @Prop({ type: [String], default: [] })
+  pictures: string[];
+
   @Prop({ type: Date, default: null })
   deletedAt: Date;
 }

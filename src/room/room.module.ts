@@ -7,6 +7,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   controllers: [RoomController],
   providers: [RoomService],
-  imports: [MongooseModule.forFeature([{ name: 'Room', schema: RoomSchema }])],
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'Room', schema: RoomSchema, collection: 'Room' },
+    ]),
+  ],
 })
 export class RoomModule {}

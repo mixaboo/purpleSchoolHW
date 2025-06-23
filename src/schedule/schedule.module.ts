@@ -8,7 +8,9 @@ import { ScheduleSchema } from './domain/models/schedule.model';
   controllers: [ScheduleController],
   providers: [ScheduleService],
   imports: [
-    MongooseModule.forFeature([{ name: 'Schedule', schema: ScheduleSchema }]),
+    MongooseModule.forFeature([
+      { name: 'Schedule', schema: ScheduleSchema, collection: 'Schedule' },
+    ]),
   ],
 })
 export class ScheduleModule {}
