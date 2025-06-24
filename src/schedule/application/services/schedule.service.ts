@@ -3,17 +3,30 @@ import { CreateScheduleDto } from '../../presentation/dto/create-schedule.dto';
 import { UpdateScheduleDto } from '../../presentation/dto/update-schedule.dto';
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { ScheduleModel } from '../../domain/models/schedule.model';
-import { SCHEDULE_ALREADY_EXISTS } from '../../infrastructure/constants/schedule.constants';
+import {
+  ScheduleModel,
+  ScheduleWithInfo,
+} from '../../domain/models/schedule.model';
+import {
+  SCHEDULE_ALREADY_EXISTS,
+  SCHEDULE_NOT_FOUND,
+} from '../../infrastructure/constants/schedule.constants';
+import { UserService } from '@app/user/application/services/user.service';
+import { RoomService } from '@app/room/application/services/room.service';
 
 @Injectable()
 export class ScheduleService {
   constructor(
     @InjectModel('Schedule')
     private readonly scheduleModel: Model<ScheduleModel>,
+    private readonly userService: UserService,
+    private readonly roomService: RoomService,
   ) {}
 
-  async create(dto: CreateScheduleDto): Promise<ScheduleModel> {
+  async create(
+    dto: CreateScheduleDto,
+    userEmail: string,
+  ): Promise<ScheduleWithInfo> {
     const sameReservation = await this.scheduleModel
       .find({
         roomId: new Types.ObjectId(dto.roomId),
@@ -23,17 +36,47 @@ export class ScheduleService {
     if (sameReservation.length > 0) {
       throw new HttpException(SCHEDULE_ALREADY_EXISTS, HttpStatus.CONFLICT);
     }
-    return this.scheduleModel.create(dto);
+    const reservation = await this.scheduleModel.create(dto);
+
+    const userProfile = await this.userService.findByEmail(userEmail);
+    const room = await this.roomService.get(dto.roomId);
+    return {
+      ...reservation.toObject(),
+      userInfo: {
+        name: userProfile!.name,
+        phone: userProfile!.phone,
+      },
+      roomInfo: {
+        roomNumber: room.number,
+      },
+    };
   }
 
-  async delete(scheduleId: string): Promise<ScheduleModel | null> {
-    return await this.scheduleModel
+  async delete(
+    scheduleId: string,
+    userEmail: string,
+  ): Promise<ScheduleWithInfo | null> {
+    const reservation = await this.scheduleModel
       .findByIdAndUpdate(
         new Types.ObjectId(scheduleId),
         { deletedAt: new Date() },
         { new: true },
       )
       .exec();
+
+    if (!reservation) {
+      throw new HttpException(SCHEDULE_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    const userProfile = await this.userService.findByEmail(userEmail);
+
+    return {
+      ...reservation.toObject(),
+      userInfo: {
+        name: userProfile!.name,
+        phone: userProfile!.phone,
+      },
+    };
   }
 
   async deleteByRoomId(roomId: string): Promise<{ modifiedCount: number }> {

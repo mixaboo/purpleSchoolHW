@@ -1,8 +1,20 @@
 import { Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+export interface ScheduleWithInfo extends ScheduleModel {
+  userInfo?: {
+    name: string;
+    phone: string;
+  };
+  roomInfo?: {
+    roomNumber: number;
+  };
+}
+
 @Schema({ timestamps: true })
 export class ScheduleModel {
+  _id: Types.ObjectId;
+
   @Prop({ type: Date, required: true })
   reservationDate: Date;
 

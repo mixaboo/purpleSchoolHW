@@ -12,5 +12,6 @@ import { MongooseModule } from '@nestjs/mongoose';
       { name: 'Room', schema: RoomSchema, collection: 'Room' },
     ]),
   ],
+  exports: [RoomService],
 })
 export class RoomModule {}

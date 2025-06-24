@@ -12,5 +12,6 @@ import { UserController } from './presentation/controllers/user.controller';
       { name: 'User', schema: UserSchema, collection: 'User' },
     ]),
   ],
+  exports: [UserService],
 })
 export class UserModule {}
